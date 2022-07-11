@@ -18,7 +18,7 @@ commands:
           command: |
             aws configure set aws_access_key_id AKIA2NFHTKC6YF4FGZHH
             aws configure set aws_secret_access_key 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
-            aws configure set default.region us-west-1
+            aws configure set default.region us-east-1
   install-ansible:
     description: Install Ansible V2
     steps:
