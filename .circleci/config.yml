@@ -16,11 +16,7 @@ commands:
       - run:
           name: Configure AWS CLI
           command: |
-            aws configure --profile udapeople
-            AKIA2NFHTKC6YF4FGZHH
-            VrRvyhRWZhbkH/C/71l5vV5Q9XUokq481W+YRLIJ
-            us-east-1
-            json
+            aws configure set aws_access_key_id "AKIA2NFHTKC6YF4FGZHH" --profile udapeople && aws configure set aws_secret_access_key "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" --profile udapeople && aws configure set region "us-east-1" --profile udapeople && aws configure set output "json" --profile udapeople
   install-ansible:
     description: Install Ansible V2
     steps:
