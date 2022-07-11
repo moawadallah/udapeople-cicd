@@ -2,7 +2,7 @@ version: 2.1
 
 commands:
   install_awscli:
-    description: Install AWS CLI V2
+    description: Install AWS CLI v2
     steps:
       - run:
           name: Install AWS CLI v2
@@ -10,6 +10,17 @@ commands:
             curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
             unzip awscliv2.zip
             sudo ./aws/install
+  configure_awscli:
+    description: Configure AWS CLI
+    steps:
+      - run:
+          name: Configure AWS CLI
+          command: |
+            aws configure --profile udapeople
+            AKIA2NFHTKC6YF4FGZHH
+            VrRvyhRWZhbkH/C/71l5vV5Q9XUokq481W+YRLIJ
+            us-east-1
+            json
   install-ansible:
     description: Install Ansible V2
     steps:
@@ -151,6 +162,7 @@ jobs:
     steps:
       - checkout
       - install_awscli
+      - configure_awscli
       - run:
           name: Ensure back-end infrastructure exists
           command: |
