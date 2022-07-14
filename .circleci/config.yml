@@ -16,8 +16,8 @@ commands:
       - run:
           name: Configure AWS CLI
           command: |
-            aws configure set aws_access_key_id AKIA2NFHTKC67NEZ7BUA
-            aws configure set aws_secret_access_key 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
+            aws configure set aws_access_key_id AKIA2NFHTKC65RZYP47Z
+            aws configure set aws_secret_access_key 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
             aws configure set default.region us-east-1
   install_ansible:
     description: Install Ansible V2
@@ -194,7 +194,6 @@ jobs:
           paths:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment
-
 
   configure-infrastructure:
     docker:
