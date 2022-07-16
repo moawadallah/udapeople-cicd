@@ -17,8 +17,8 @@ commands:
       - run:
           name: Configure AWS CLI
           command: |
-            aws configure set aws_access_key_id AKIA2NFHTKC64TBX3M4K
-            aws configure set aws_secret_access_key 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
+            aws configure set aws_access_key_id AKIA2NFHTKC65RZYP47Z
+            aws configure set aws_secret_access_key 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
             aws configure set default.region us-east-1
 
   install_ansible:
