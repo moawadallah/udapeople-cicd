@@ -11,15 +11,15 @@ commands:
             unzip awscliv2.zip
             sudo ./aws/install
 
-  configure_awscli:
-    description: Configure AWS CLI
-    steps:
-      - run:
-          name: Configure AWS CLI
-          command: |
-            aws configure set aws_access_key_id AKIA2NFHTKC65RZYP47Z
-            aws configure set aws_secret_access_key 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
-            aws configure set default.region us-east-1
+  # configure_awscli:
+  #   description: Configure AWS CLI
+  #   steps:
+  #     - run:
+  #         name: Configure AWS CLI
+  #         command: |
+  #           aws configure set aws_access_key_id AKIA2NFHTKC65RZYP47Z
+  #           aws configure set aws_secret_access_key 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
+  #           aws configure set default.region us-east-1
 
   install_ansible:
     description: Install Ansible
@@ -181,7 +181,7 @@ jobs:
     steps:
       - checkout
       - install_awscli
-      - configure_awscli
+      # - configure_awscli
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -242,7 +242,7 @@ jobs:
     steps:
       - checkout
       - install_awscli
-      - configure_awscli
+      # - configure_awscli
       - run:
           name: Run migrations
           command: |
@@ -265,7 +265,7 @@ jobs:
     steps:
       - checkout
       - install_awscli
-      - configure_awscli
+      # - configure_awscli
       - install_nodejs
       - restore_cache:
           keys: [frontend-deps]
@@ -300,7 +300,7 @@ jobs:
     steps:
       - checkout
       - install_awscli
-      - configure_awscli
+      # - configure_awscli
       - install_ansible
       - install_nodejs
       - add_ssh_keys:
@@ -343,7 +343,7 @@ jobs:
     steps:
       - checkout
       - install_awscli
-      - configure_awscli
+      # - configure_awscli
       - install_nodejs
       - run:
           name: Backend smoke test.
@@ -379,7 +379,7 @@ jobs:
     steps:
       - checkout
       - install_awscli
-      - configure_awscli
+      # - configure_awscli
       - install_nodejs
       - run:
           name: Save Old Workflow ID to kvdb.io
@@ -405,7 +405,7 @@ jobs:
     steps:
       - checkout
       - install_awscli
-      - configure_awscli
+      # - configure_awscli
       - install_nodejs
       - run:
           name: Remove old stacks and files
