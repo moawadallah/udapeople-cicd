@@ -17,9 +17,10 @@ commands:
       - run:
           name: Configure AWS CLI
           command: |
-            aws configure set aws_access_key_id AWS_Access_KEY_ID
-            aws configure set aws_secret_access_key AWS_SECRET_ACCESS_KEY
-            aws configure set region AWS_DEFAULT_REGION
+            aws configure set aws_access_key_id AWS_Access_KEY_ID --profile moawadalla
+            aws configure set aws_secret_access_key AWS_SECRET_ACCESS_KEY --profile moawadalla
+            aws configure set region AWS_DEFAULT_REGION --profile moawadalla
+            aws sts get-caller-identity --profile moawadalla
 
   install_ansible:
     description: Install Ansible
@@ -57,9 +58,9 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.Workflow_ID >>
-            aws s3 rm s3://udapeople-<<parameters.Workflow_ID>> --recursive
-            aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.Workflow_ID >>
+            aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.Workflow_ID >> --profile moawadalla
+            aws s3 rm s3://udapeople-<<parameters.Workflow_ID>> --recursive --profile moawadalla
+            aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.Workflow_ID >> --profile moawadalla
 
   revert-migrations:
     description: Revert the last migration
@@ -188,6 +189,7 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople \
+              --profile moawadalla \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
 
@@ -197,6 +199,7 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project=udapeople \
+              --profile moawadalla \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
 
@@ -205,6 +208,7 @@ jobs:
           command: |
             BACKEND_PUBLIC_IP=$(aws ec2 describe-instances \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --profile moawadalla \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
             echo $BACKEND_PUBLIC_IP >> .circleci/ansible/inventory.txt
@@ -279,6 +283,7 @@ jobs:
           command: |
             BACKEND_PUBLIC_IP=$(aws ec2 describe-instances \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --profile moawadalla \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
 
@@ -289,7 +294,7 @@ jobs:
           command: |
             cd frontend
             npm run build
-            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive --profile moawadalla
 
       - destroy-environment
       - revert-migrations
@@ -350,6 +355,7 @@ jobs:
           command: |
             BACKEND_PUBLIC_IP=$(aws ec2 describe-instances \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --profile moawadalla \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text)
 
@@ -386,6 +392,7 @@ jobs:
           command: |
             export OLD_WORKFLOW_ID=$(aws cloudformation \
                       list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+                      --profile moawadalla \
                       --no-paginate --output text)
             echo "Old Wokflow ID: $OLD_WORKFLOW_ID"
             curl https://kvdb.io/${KVDB_BUCKET}/old_workflow_id -d "${OLD_WORKFLOW_ID}"
@@ -395,6 +402,7 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
+              --profile moawadalla \
               --stack-name InitialStack
       - destroy-environment
       - revert-migrations
@@ -412,6 +420,7 @@ jobs:
           command: |
             export STACKS=($(aws cloudformation list-stacks \
                 --query "StackSummaries[*].StackName" \
+                --profile moawadalla \
                 --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
             echo Stack names: "${STACKS[@]}"
 
@@ -420,9 +429,9 @@ jobs:
 
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
-              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
-              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}"
-              aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}"
+              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive --profile moawadalla
+              aws cloudformation delete-stack --stack-name "udapeople-backend-${OldWorkflowID}" --profile moawadalla
+              aws cloudformation delete-stack --stack-name "udapeople-frontend-${OldWorkflowID}" --profile moawadalla
             fi
 
 workflows:
