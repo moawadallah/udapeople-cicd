@@ -96,6 +96,8 @@ export class EmployeeController {
     @Usr() user: User,
     @Query() query: PaginatedEmployeeQuery,
   ) {
+    console.log(user);
+    console.log(query);
     const pageSize = query.pageSize || 10;
     const pageNumber = query.pageNumber || 1;
 
